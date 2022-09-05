@@ -17,7 +17,11 @@ function add_item(cart, name, price) { // pass in global as explicit input
 
 function add_item_to_cart(name, price) {
   shopping_cart = add_item(name, price);
-  calc_cart_total(shopping_cart); // pass `shopping_cart`
+
+  var total = calc_total(shopping_cart); // inlined `calc_cart_total`
+  set_cart_total_dom(total);
+  update_shipping_icons(shopping_cart);
+  update_tax_dom(total);
 }
 
 function gets_free_shipping(cart) {
@@ -48,12 +52,4 @@ function calc_total(cart) {
     total += item.price;
   }
   return total;
-}
-
-function calc_cart_total(cart) {
-  var total = calc_total(cart);
-  set_cart_total_dom(total); // pass `total`
-  update_shipping_icons(cart); // pass `cart`
-  update_tax_dom(total); // pass `total`
-  shopping_cart_total = total; // set global
 }
