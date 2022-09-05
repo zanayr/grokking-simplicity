@@ -26,12 +26,17 @@ function update_tax_dom() {
   set_tax_dom(shopping_cart_total * 0.10);
 }
 
-function calc_cart_total() {
-  shopping_cart_total = 0;
-  for (var i = 0; i < shopping_cart.length; i++) {
-    var item = shopping_cart[i]; // sum all the item prices
-    shopping_cart_total += item.price;
+function calc_total(cart) { // pass in shopping_cart explicitly
+  var total = 0;
+  for (var i = 0; i < cart.length; i++) {
+    var item = cart[i]; // sum all the item prices
+    total += item.price;
   }
+  return total;
+}
+
+function calc_cart_total() {
+  shopping_cart_total = calc_total(shopping_cart); // set global as an explicit output
   set_cart_total_dom(); // update DOM to refelect new total
   updaste_shipping_icons(); // update icons
   update_tax_dom(); // update tax
