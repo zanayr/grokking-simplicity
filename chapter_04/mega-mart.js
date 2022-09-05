@@ -2,6 +2,10 @@
 var shopping_cart = []; // global variables for the cart and total
 var shopping_cart_total = 0;
 
+function calc_tax(amount) {
+  return amount * 0.10;
+}
+
 function add_item(cart, name, price) { // pass in global as explicit input
   var new_cart = cart.slice(); // copy on write
   new_cart.push({ // add a record to cart array
@@ -16,12 +20,16 @@ function add_item_to_cart(name, price) {
   calc_cart_total(); // update total because cart just changed
 }
 
+function gets_free_shipping(total, price) {
+  return price + total >= 20;
+}
+
 function updaste_shipping_icons() {
   var buy_buttons = get_but_buttons_dom(); // get all buy buttons on the page
   for (var i = 0; i < buy_buttons.length; i++) {
     var button = buy_buttons[i];
     var item = button.item;
-    if (item.price + shopping_cart_total >= 20) // determine if they get free shipping
+    if (gets_free_shipping(shopping_cart_total, item.price)) // extracted to gets_free_shipping
       button.show_free_shipping_icon(); // show icon
     else
       button.hide_free_shipping_icon(); // hide icon
@@ -29,7 +37,7 @@ function updaste_shipping_icons() {
 }
 
 function update_tax_dom() {
-  set_tax_dom(shopping_cart_total * 0.10);
+  set_tax_dom(calc_tax(shopping_cart_total));
 }
 
 function calc_total(cart) { // pass in shopping_cart explicitly
