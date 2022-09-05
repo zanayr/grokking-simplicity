@@ -16,42 +16,44 @@ function add_item(cart, name, price) { // pass in global as explicit input
 }
 
 function add_item_to_cart(name, price) {
-  shopping_cart = add_item(name, price); // extract code to add_item and reset global with new_cart copy
-  calc_cart_total(); // update total because cart just changed
+  shopping_cart = add_item(name, price);
+  calc_cart_total(shopping_cart); // pass `shopping_cart`
 }
 
-function gets_free_shipping(total, price) {
-  return price + total >= 20;
+function gets_free_shipping(cart) {
+  return calc_total(cart) >= 20; // replace duplicated code, with existing function
 }
 
-function updaste_shipping_icons() {
-  var buy_buttons = get_but_buttons_dom(); // get all buy buttons on the page
+function update_shipping_icons(cart) {
+  var buy_buttons = get_but_buttons_dom();
   for (var i = 0; i < buy_buttons.length; i++) {
     var button = buy_buttons[i];
     var item = button.item;
-    if (gets_free_shipping(shopping_cart_total, item.price)) // extracted to gets_free_shipping
-      button.show_free_shipping_icon(); // show icon
+    var new_cart = add_item(cart, item.name, item.price); // pass `cart`
+    if (gets_free_shipping(new_cart))
+      button.show_free_shipping_icon();
     else
-      button.hide_free_shipping_icon(); // hide icon
+      button.hide_free_shipping_icon();
   }
 }
 
-function update_tax_dom() {
-  set_tax_dom(calc_tax(shopping_cart_total));
+function update_tax_dom(total) {
+  set_tax_dom(calc_tax(total));
 }
 
-function calc_total(cart) { // pass in shopping_cart explicitly
+function calc_total(cart) {
   var total = 0;
   for (var i = 0; i < cart.length; i++) {
-    var item = cart[i]; // sum all the item prices
+    var item = cart[i];
     total += item.price;
   }
   return total;
 }
 
-function calc_cart_total() {
-  shopping_cart_total = calc_total(shopping_cart); // set global as an explicit output
-  set_cart_total_dom(); // update DOM to refelect new total
-  updaste_shipping_icons(); // update icons
-  update_tax_dom(); // update tax
+function calc_cart_total(cart) {
+  var total = calc_total(cart);
+  set_cart_total_dom(total); // pass `total`
+  update_shipping_icons(cart); // pass `cart`
+  update_tax_dom(total); // pass `total`
+  shopping_cart_total = total; // set global
 }
