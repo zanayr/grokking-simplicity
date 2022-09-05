@@ -2,11 +2,17 @@
 var shopping_cart = []; // global variables for the cart and total
 var shopping_cart_total = 0;
 
-function add_item_to_cart(name, price) {
-  shopping_cart.push({ // add a record to cart array
+function add_item(cart, name, price) { // pass in global as explicit input
+  var new_cart = cart.slice(); // copy on write
+  new_cart.push({ // add a record to cart array
     name: name,        // to add items to the cart
     price: price
   });
+  return new_cart;
+}
+
+function add_item_to_cart(name, price) {
+  shopping_cart = add_item(name, price); // extract code to add_item and reset global with new_cart copy
   calc_cart_total(); // update total because cart just changed
 }
 
