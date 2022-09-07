@@ -86,6 +86,12 @@ function update_tax_dom(total) {
   set_tax_dom(calc_tax(total));
 }
 
+function black_friday_promotion_safe(cart) {
+  var cart_copy = deep_copy(cart);
+  black_friday_promotion(cart_copy);
+  return deep_copy(cart_copy);
+}
+
 function add_item_to_cart(name, price) {
   var item = make_cart_item(name, price);
   shopping_cart = add_item(shopping_cart, item);
@@ -93,6 +99,7 @@ function add_item_to_cart(name, price) {
   set_cart_total_dom(total);
   update_shipping_icons(shopping_cart);
   update_tax_dom(total);
+  shopping_cart = black_friday_promotion_safe(shopping_cart);
 }
 
 function delete_handler(name) {
