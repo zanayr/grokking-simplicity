@@ -2,6 +2,12 @@
 var shopping_cart = []; // action: global
 
 // CALCULATIONS
+function array_set(array, index, value) {
+  var copy = array.slice();
+  copy[index] = value;
+  return copy;
+}
+
 function add_element_last(array, elem) {
   var new_array = array.slice();
   new_array.push(elem);
@@ -38,12 +44,16 @@ function remove_items(array, idx, count) {
   return copy;
 }
 
-function remove_item_by_name(cart, name) {
-  var idx = null;
+function index_of_item(cart, name) {
   for (var i = 0; i < cart.length; i++) {
     if (cart[i].name === name)
-      idx = i;
+      return i;
   }
+  return null;
+}
+
+function remove_item_by_name(cart, name) {
+  var idx = index_of_item(cart, name);
   if (idx !== null)
     return remove_items(cart, idx, 1);
   return cart;
@@ -62,6 +72,27 @@ function set_price(item, new_price) {
   var item_copy = Object.assign({}, item);
   item_copy.price = new_price;
   return item_copy;
+}
+
+function set_price_by_name(cart, name, price) {
+  var i = index_of_item(cart, name);
+  if (i !== null)
+    return array_set(cart, i, set_price(cart[i], price));
+  return cart_copy;
+}
+
+function is_in_cart(cart, name) {
+  return index_of_item(cart, name) !== null;
+}
+
+function free_tie_clip(cart) {
+  var has_tie = is_in_cart(cart, "tie");
+  var has_tie_clip = is_in_cart(cart, "tie clip");
+  if (has_tie && !has_tie_clip) {
+    var tie_clip = make_cart_item("tie clip", 0);
+    return add_item(cart, tie_clip);
+  }
+  return cart;
 }
 
 // ACTIONS
