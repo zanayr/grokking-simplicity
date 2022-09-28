@@ -1,21 +1,24 @@
 const foods = ["apple", "banana", "chocolate"];
 const dishes = ["plate", "knife"];
-function cookAndEatFoods() {
-  for (let i = 0; i < foods.length; i++) {
-    const food = foods[i];
-    cook(food);
-    eat(food);
+
+// ForEach Function
+function forEach(array, f) {
+  for (let i = 0; i < array.length; i++) {
+    f(array[i]);
   }
 }
 
-function cleanDishes() {
-  for (let i = 0; i < dishes.length; i++) {
-    const dish = dishes[i];
-    wash(dish);
-    dry(dish);
-    putAway(dish);
-  }
+// Business Functions
+function cookAndEat(food) {
+  cook(food);
+  eat(food);
 }
 
-cookAndEatFoods();
-cleanDishes();
+function clean(dish) {
+  wash(dish);
+  dry(dish);
+  putAway(dish);
+}
+
+forEach(foods, cookAndEat);
+forEach(dishes, clean);
