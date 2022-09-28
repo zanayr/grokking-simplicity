@@ -1,4 +1,4 @@
-// deno-lint-ignore-file no-var no-unused-vars camelcase no-inner-declarations
+// deno-lint-ignore-file no-var no-unused-vars camelcase no-inner-declarations no-prototype-builtins no-redeclare
 var shopping_cart = []; // action: global
 
 // CALCULATIONS
@@ -16,8 +16,9 @@ function add_element_last(array, elem) {
 
 function calc_total(cart) {
   var total = 0;
-  for (var i = 0; i < cart.length; i++) {
-    var item = cart[i];
+  var names = Object.keys(cart);
+  for (var i = 0; i < names.length; i++) {
+    var item = cart[names[i]];
     total += item.price;
   }
   return total;
@@ -25,6 +26,10 @@ function calc_total(cart) {
 
 function calc_tax(amount) {
   return amount * 0.10;
+}
+
+function cart_tax(cart) {
+  return calc_tax(calc_total(cart));
 }
 
 function make_cart_item(name, price) {
@@ -35,7 +40,7 @@ function make_cart_item(name, price) {
 }
 
 function add_item(cart, item) {
-  return add_element_last(cart, item);
+  return object_set(cart, item.name, item);
 }
 
 function remove_items(array, idx, count) {
@@ -53,10 +58,7 @@ function index_of_item(cart, name) {
 }
 
 function remove_item_by_name(cart, name) {
-  var idx = index_of_item(cart, name);
-  if (idx !== null)
-    return remove_items(cart, idx, 1);
-  return cart;
+  return object_delete(cart, name);
 }
 
 function gets_free_shipping(cart) {
@@ -75,14 +77,18 @@ function set_price(item, new_price) {
 }
 
 function set_price_by_name(cart, name, price) {
-  var i = index_of_item(cart, name);
-  if (i !== null)
-    return array_set(cart, i, set_price(cart[i], price));
-  return cart_copy;
+  if(is_in_cart(cart, name)) {
+    var item = cart[name];
+    var copy = set_price(item, price);
+    return object_set(cart, name, copy);
+  } else {
+    var item = make_cart_item(name, price);
+    return object_set(cart, name, item);
+  }
 }
 
 function is_in_cart(cart, name) {
-  return index_of_item(cart, name) !== null;
+  return cart.hasOwnProperty(name);
 }
 
 function free_tie_clip(cart) {
