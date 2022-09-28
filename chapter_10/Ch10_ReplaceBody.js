@@ -1,5 +1,8 @@
-try {
-  saveUserData(user);
-} catch (error) {
-  logToSnapErrors(error);
+function withLogging(f) {
+  try {
+    f();
+  } catch (error) {
+    logToSnapErrors(error);
+  }
 }
+withLogging(() => saveUserData(user));
