@@ -62,7 +62,15 @@ try {
   logToSnapErrors(error);
 }
 
-function tryCatch() {}
+function tryCatch(tryFn, catchFn) {
+  try {
+    tryFn();
+  } catch(error) {
+    catchFn(error);
+  }
+}
+
+tryCatch(() => { throw `Error` }, e => console.log(e === "Error"));
 
 // It's Your Turn p. 277
 // Refactor an if statement with the Replace Body with
@@ -77,9 +85,23 @@ if (hasItem(cart, "shoes")) {
   setPriceByName(cart, "shoes", 0);
 }
 
-function when() {}
+function when(conditional, fn) {
+  if (conditional()) return fn();
+}
+
+console.log(when(() => [1, 2, 3].length() === 3, () => true));
 
 // It's Your Turn p. 278
 // Add an else statement to your `when` function and
 // rename it to `IF`
-function IF() {}
+function IF(
+  conditional,
+  ifFn,
+  elseFn
+) {
+  if (conditional()) ifFn();
+  else elseFn();
+}
+
+console.log(IF(() => [1, 2, 3].length() === 3, () => true, () => false));
+console.log(IF(() => [1, 2, 3].length() === 2, () => false, () => true));
