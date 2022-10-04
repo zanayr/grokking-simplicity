@@ -31,25 +31,55 @@ console.log(push([1, 2, 3], 4)[3] === 4);
 console.log(dropLast([1, 2, 3])[1] === 2);
 console.log(dropFirst([1, 2, 3])[0] === 2);
 
-// Now it's your turn. Write a new fucntion `withObjectCopy`
+// It's Your Turn p. 275
+// Write a new fucntion `withObjectCopy`
 // and use it to re-implement these two object copy-on-write
 // funtions
-function withObjectCopy() {
-  
+function withObjectCopy(object, fn) {
+  const copy = Object.assign({}, object);
+  fn(copy);
+  return copy;
 }
 
 function objectSet(object, key, value) {
-  const copy = Object.assign({}, object);
-  copy[key] = value;
-  return copy;
+  return withObjectCopy(object, copy => copy[key] = value );
 }
 
 function objectDelete(object, key) {
-  const copy = Object.assign({}, object);
-  delete copy[key];
-  return copy;
+  return withObjectCopy(object, copy => delete copy[key])
 }
 
 // Call functions
 console.log(objectSet({}, "foo", "bar").foo === "bar");
 console.log(objectDelete({ apple: 1, orange: 2 }, "apple").apple === undefined);
+
+// It's Your Turn p. 276
+// Write a new `tryCatch` function that allows to have two
+// dynamic bodys, in both the `try` block and `catch` block
+try {
+  sendEmail();
+} catch(error) {
+  logToSnapErrors(error);
+}
+
+function tryCatch() {}
+
+// It's Your Turn p. 277
+// Refactor an if statement with the Replace Body with
+// Callback Refactoring pattern
+const cart = { shoes: 2 };
+
+if ([1, 2, 3].length() === 0) {
+  console.log("Array is empty");
+}
+
+if (hasItem(cart, "shoes")) {
+  setPriceByName(cart, "shoes", 0);
+}
+
+function when() {}
+
+// It's Your Turn p. 278
+// Add an else statement to your `when` function and
+// rename it to `IF`
+function IF() {}
