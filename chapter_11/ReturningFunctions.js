@@ -4,7 +4,7 @@ function wrapLogging(fn) {
     try {
       fn(arg);
     } catch(error) {
-      console.err(`{ level: error, message: ${error} }`);
+      console.error(`{ level: error, message: ${error} }`);
     }
   }
 }
@@ -24,11 +24,28 @@ fetchProductWithLogging(productId);
 // HINT: You normally ignore errors by wrapping code in a try/catch block and doing
 //       nothing in the catch
 
-function wrapIgnoreErrors() { }
+function wrapIgnoreErrors(fn) {
+  return (...args) => {
+    try {
+      fn(...args);
+    } catch(_) {
+      // console.error(`{ level: error, message: ${error} }`);
+      return null;
+    }
+  }
+}
 
+console.log(!!wrapIgnoreErrors((a, b, c) => {
+  console.log(a, b, c);
+  throw `Error!`;
+})(1, 2, 3));
 
 // It's Your Turn p. 286
 // Write a function called `makeAdder` that makes a function to add a number to
 // another number
 
-function makeAdder() { }
+function makeAdder(n) {
+  return x => n + x;
+}
+
+console.log(makeAdder(1)(1) === 2);
