@@ -1,4 +1,3 @@
-// Reduce function here
 function reduce(array, init, f) {
   const accum = init;
   forEach(array, element => {
