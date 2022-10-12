@@ -1,10 +1,12 @@
 // Reduce function here
-function reduce() {
-  // code here
+function reduce(array, init, f) {
+  const accum = init;
+  forEach(array, element => {
+    accum = f(accum, element);
+  });
+  return accum;
 }
 
 function countAllPurchases(customers) {
-  const total = 0;
-  forEach(customers, customer => total = total + customer.purchases.length );
-  return total;
+  return reduce(customers, 0, (total, customer) => total + customer.purchases.length);
 }
