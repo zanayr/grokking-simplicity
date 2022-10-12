@@ -1,7 +1,11 @@
-function selectBestCustomers(customers) {
+function filter(array, f) {
   const newArray = [];
-  forEach(customers, customer => {
-    if (customer.purchases.length >= 3) newArray.push(customer);
+  forEach(array, element => {
+    if (f(element)) newArray.push(element);
   });
   return newArray;
+}
+
+function selectBestCustomers(customers) {
+  return filter(customers, customer => customer.purchases.length >= 3);
 }
