@@ -1,39 +1,21 @@
+function map(array, f) {
+  const newArray = [];
+  forEach(array, element => newArray.push(f(element)));
+  return newArray;
+}
+
 function emailsForCustomers(customers, goods, bests) {
-  const emails = [];
-  for (let i = 0; i < customers.length; i++) {
-    const customer = customers[i];
-    const email = emailsForCustomers(customer, goods, bests);
-    emails.push(email);
-  }
-  return emails;
+  return map(customers, customer => emailForCustomer(customer, goods, bests));
 }
 
 function customerFullNames(customers) {
-  const fullNames = [];
-  for (let i = 0; i < fullNames.length; i++) {
-    const cust = customers[i];
-    const name = `${cust.firstName} ${cust.lastName}`;
-    fullNames.push(name);
-  }
-  return fullNames;
+  return map(customers, customer => `${customer.firstName} ${customer.lastName}`);
 }
 
 function biggestPurchasePerCustomer(customers) {
-  const purchases = [];
-  for(let i = 0; i < customers.length; i++) {
-    const customer = customers[i];
-    const purchase = biggestPurchase(customer);
-    purchases.push(purchase);
-  }
-  return purchases;
+  return map(customers, customer => biggestPurchase(customer));
 }
 
 function customerCities(customers) {
-  const cities = [];
-  for (let i = 0; i < customers.length; i++) {
-    const customer = customers[i];
-    const city = customer.address.city;
-    cities.push(city);
-  }
-  return cities;
+  return map(customers, customer => customer.address.city);
 }
