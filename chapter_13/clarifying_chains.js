@@ -41,6 +41,19 @@ function maxKey(array, init, f) {
   });
 }
 
+// Name the callbacks
+function isGoodCustomer(customer) {
+  return customer.purchases.length >= 3;
+}
+
+function getPurchaseTotal(purchase) {
+  return purchase.total;
+}
+
+function geBiggestPurchase(customer) {
+  return maxKey(customer.purchases, { total: 0 }, getPurchaseTotal);
+}
+
 function biggestPurchasesBestCustomers(customers) {
   const bestCustomers = filter(customers, function(customer) {
     return customer.purchases.length > 3;
