@@ -50,19 +50,12 @@ function getPurchaseTotal(purchase) {
   return purchase.total;
 }
 
-function geBiggestPurchase(customer) {
+function getBiggestPurchase(customer) {
   return maxKey(customer.purchases, { total: 0 }, getPurchaseTotal);
 }
 
 function biggestPurchasesBestCustomers(customers) {
-  const bestCustomers = filter(customers, function(customer) {
-    return customer.purchases.length > 3;
-  });
-
-  const biggestPurchases = map(bestCustomers, function(customer) {
-    return maxKey(customer.purchases, { total: 0 }, function(purchase) {
-      return purchase.total;
-    });
-  });
+  const bestCustomers = filter(customers, isGoodCustomer);
+  const biggestPurchases = map(bestCustomers, getBiggestPurchase);
   return biggestPurchases;
 }
